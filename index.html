@@ -158,6 +158,244 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-wireshark使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/11/28/wireshark%E4%BD%BF%E7%94%A8/">wireshark使用</a>
+    </h1>
+  
+
+        
+        <a href="/2022/11/28/wireshark%E4%BD%BF%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2022-11-28T01:11:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-11-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>TCP/IP协议簇</p>
+<ul>
+<li><p>网络接口层（没有特定的协议）   PPOE</p>
+<ul>
+<li><p>物理层</p>
+</li>
+<li><p>数据链路层</p>
+</li>
+</ul>
+</li>
+<li><p>网络层：IP（v4/v6）、ARP（地址解析协议）、RAP、ICMP（Internet控制报文协议）、IGMP</p>
+</li>
+<li><p>传输层：TCP（传输控制协议）、UDP（用户数据报协议）</p>
+</li>
+<li><p>应用层：都是基于传输层协议的端口，总共端口0-65535，HTTP-TCP80、HTTPS-TCP443</p>
+<ul>
+<li>DHCP</li>
+<li>DNS</li>
+<li>HTTP</li>
+<li>HTTPS</li>
+<li>FTP</li>
+<li>SMTP</li>
+<li>POP3</li>
+<li>IMAP</li>
+</ul>
+</li>
+</ul>
+<h3 id="流量抓取工具（wireshark）"><a href="#流量抓取工具（wireshark）" class="headerlink" title="流量抓取工具（wireshark）"></a>流量抓取工具（wireshark）</h3><h4 id="一、网卡"><a href="#一、网卡" class="headerlink" title="一、网卡"></a>一、网卡</h4><p>wireshark是对主机网卡上的数据流量进行抓取</p>
+<h5 id="1、网卡模式："><a href="#1、网卡模式：" class="headerlink" title="1、网卡模式："></a>1、网卡模式：</h5><ul>
+<li><p>混杂模式：不管目的是否是自己，都接受</p>
+</li>
+<li><p>非混杂模式：默认情况下，主机网卡处于此模式，不会接收目的非自己的数据</p>
+</li>
+</ul>
+<h5 id="2、两种过滤器"><a href="#2、两种过滤器" class="headerlink" title="2、两种过滤器"></a>2、两种过滤器</h5><p>捕获过滤器：在抓包之前先进行过滤（只抓某种类型的包或者不抓某些类型的包）</p>
+<ul>
+<li><p>语法</p>
+<ul>
+<li>类型：host、net、port</li>
+<li>方向：src、dst</li>
+<li>协议：ether、ip、tcp、udp、http、ftp……</li>
+<li>逻辑运算符：&amp;&amp;、||、！</li>
+</ul>
+</li>
+<li><p>例子：</p>
+<ul>
+<li><p>抓取源IP为192.168.18.14并且目标端口为80的报文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src host 192.168.18.14 and dst port 80</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>抓取IP为192.168.18.14或者IP地址为192.168.18.1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host 192.168.18.14 || host 192.168.18.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不抓取广播包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">! broadcast</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>显示过滤器：抓包前抓包后都可以进行过滤，但是不会影响抓取的包（会抓取所有的包，只不过在查看的时候只显示某些包）</p>
+<ul>
+<li><p>语法</p>
+<ul>
+<li>比较操作符：==、!=、&lt;、&gt;、&gt;=、&lt;=</li>
+<li>逻辑操作符：and、or、not</li>
+<li>IP地址过滤：ip.addr   ip.src(源地址)   ip.dst(目的地址)</li>
+<li>端口过滤:tcp.port   udp.port   tcp.dstport   tcp.flag.syn   tcp.flag.ack</li>
+<li>协议过滤：arp   ip   icmp   udp   tcp    http</li>
+</ul>
+</li>
+<li><p>举例</p>
+<ul>
+<li><p>显示源IP等于192.168.18.14并且tcp端口为443</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.src==192.168.18.14 and tcp.port==443</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络协议与攻击模拟</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-文件分离" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/11/22/%E6%96%87%E4%BB%B6%E5%88%86%E7%A6%BB/">文件分离</a>
+    </h1>
+  
+
+        
+        <a href="/2022/11/22/%E6%96%87%E4%BB%B6%E5%88%86%E7%A6%BB/" class="archive-article-date">
+  	<time datetime="2022-11-22T06:58:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-11-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="文件分离操作"><a href="#文件分离操作" class="headerlink" title="文件分离操作"></a>文件分离操作</h2><h3 id="1、Binwalk工具"><a href="#1、Binwalk工具" class="headerlink" title="1、Binwalk工具"></a>1、Binwalk工具</h3><ul>
+<li>Binwalk是Linux下用来分析和分离文件的工具，可以快速分辨文件是否由多个文件合并而成，并将文件进行分离。如果分离成功，分离出的文件会在目标文件的目录</li>
+<li>用法：<ul>
+<li>分析文件：binwalk filename</li>
+<li>分离文件：binwalk -e fliename</li>
+</ul>
+</li>
+</ul>
+<h3 id="2、dd"><a href="#2、dd" class="headerlink" title="2、dd"></a>2、dd</h3><ul>
+<li>当文件自动分离出错或者因为其他原因无法自动分离时，可以使用dd实现文件手动分离</li>
+<li>格式：<ul>
+<li>dd if=源文件 of=目标文件名 bs=1 skip=开始分离的字节数</li>
+</ul>
+</li>
+<li>参数说明：<ul>
+<li>if=file              #输入文件名，缺省为标准输入</li>
+<li>of=file             #输出文件名，缺省为标准输出</li>
+<li>bs=bytes        #同时设置读写块的大小为bytes，可代替ibs和obs</li>
+<li>skip=blocks    #从输入文件开头跳过blocks个块后再开始复制</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据封装与解封装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -734,150 +972,6 @@
 
 
   
-    <article id="post-Windows基本命令-网络相关" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/23/Windows%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4-%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/">Windows基本命令-网络相关</a>
-    </h1>
-  
-
-        
-        <a href="/2022/08/23/Windows%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4-%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/" class="archive-article-date">
-  	<time datetime="2022-08-23T10:03:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Windows中有关网络的命令与操作</p>
-        
-          <a class="article-more-a" href="/2022/08/23/Windows%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4-%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Windows</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-决策树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/03/31/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a>
-    </h1>
-  
-
-        
-        <a href="/2022/03/31/%E5%86%B3%E7%AD%96%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2022-03-31T07:51:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>​    决策树是一类常见的机器学习方法，以二分类任务为例，我们希望给定训练数据集学得一个模型用以对新示例进行分类，这个把分类的任务，可看作对“当前样本属于正类吗？“的一个”决策“或”判断“过程。顾名思义，决策树是基于树结构来进行决策的，这恰是人类在面临决策问题时一种很自然的处理机制。</p>
-        
-          <a class="article-more-a" href="/2022/03/31/%E5%86%B3%E7%AD%96%E6%A0%91/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -988,11 +1082,19 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Windows</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Windows</a>
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">网络协议与攻击模拟</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1000,7 +1102,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">网络安全</a>
               </li>
             
             <div class="clearfix"></div>
