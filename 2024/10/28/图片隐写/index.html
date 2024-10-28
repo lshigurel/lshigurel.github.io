@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>图片隐写 | Shigure's Blog</title><meta name="author" content="Shigure"><meta name="copyright" content="Shigure"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一些关于CTF中图片隐写的内容和解题方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片隐写">
+<meta property="og:url" content="http://example.com/2024/10/28/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/index.html">
+<meta property="og:site_name" content="Shigure&#39;s Blog">
+<meta property="og:description" content="一些关于CTF中图片隐写的内容和解题方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2024-10-28T15:33:23.000Z">
+<meta property="article:modified_time" content="2024-10-28T15:55:18.404Z">
+<meta property="article:author" content="Shigure">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="MISC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/10/28/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '图片隐写',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-28 23:55:18'
+}</script><link rel="stylesheet" href="/css/mycss.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/background.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/top_image.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Shigure's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">图片隐写</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">图片隐写</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-28T15:33:23.000Z" title="发表于 2024-10-28 23:33:23">2024-10-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-28T15:55:18.404Z" title="更新于 2024-10-28 23:55:18">2024-10-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="常见图片格式"><a href="#常见图片格式" class="headerlink" title="常见图片格式"></a>常见图片格式</h2><table>
+<thead>
+<tr>
+<th>文件扩展名</th>
+<th>文件头</th>
+<th>文件尾</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jpg&#x2F;jpeg</td>
+<td>ffd8&#x2F;ffe0</td>
+<td>ffd9</td>
+</tr>
+<tr>
+<td>png</td>
+<td>89504e47</td>
+<td>ae426082</td>
+</tr>
+<tr>
+<td>gif</td>
+<td>474946383961(GIF89a)</td>
+<td>003b</td>
+</tr>
+</tbody></table>
+<h2 id="附加式隐写-直接附加字符串"><a href="#附加式隐写-直接附加字符串" class="headerlink" title="附加式隐写 - 直接附加字符串"></a>附加式隐写 - 直接附加字符串</h2><p>直接附加字符串原理是利用工具将隐藏信息直接写入到图片结束符之后，由于计算机中图片处理程序识别到图片结束符就不再继续向下识别，因此后面的信息就被隐藏起来</p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-0.png" alt="image-0"></p>
+<h2 id="附加式隐写-图种"><a href="#附加式隐写-图种" class="headerlink" title="附加式隐写 - 图种"></a>附加式隐写 - 图种</h2><p>图种是一种采用特殊方式将图片文件（如 jpg 格式） 与其他文件类型（如 zip 格式）结合起来的文件。 该文件一般保存为图片格式，可以正常显示图片。</p>
+<p>使用binwalk、foremost等工具进行分离</p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-1.png" alt="image-1"></p>
+<h2 id="附加式隐写-EXIF隐写"><a href="#附加式隐写-EXIF隐写" class="headerlink" title="附加式隐写 - EXIF隐写"></a>附加式隐写 - EXIF隐写</h2><p>通过鼠标右键点击图片打开菜单，点击属性并切换到详 细信息标签下即可直接查看 exif， 这种方式比较局限，一般只有 jpg 格式的图片可以。在 png 或者 bmp 详细信息中的值无法手工修改，这种隐藏方式往往容易被选手忽略。</p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-2.png" alt="image-2"></p>
+<h2 id="图片宽高隐写"><a href="#图片宽高隐写" class="headerlink" title="图片宽高隐写"></a>图片宽高隐写</h2><p>对于一张图片我们可以通过修改其宽高的方式来隐藏信息。但是修改宽度会导致图片变形，所以多数情况下是修改高度。 比较常见的是 png 格式的图片。对于 png 图片16进制中的各部分信息如下表所示，其中部分内容会因不同图片而变化，但位置是固定的。</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>89504E470D0A1A0A</td>
+<td>PNG文件头（固定）</td>
+</tr>
+<tr>
+<td>0000000D</td>
+<td>数据块长度（固定）</td>
+</tr>
+<tr>
+<td>49484452</td>
+<td>文件头数据库的标示，即IDCH，固定为ASCII码的IHDR</td>
+</tr>
+<tr>
+<td>00000073</td>
+<td>图片宽度</td>
+</tr>
+<tr>
+<td>0000004B</td>
+<td>图片高度</td>
+</tr>
+<tr>
+<td>08</td>
+<td>图像深度</td>
+</tr>
+<tr>
+<td>06</td>
+<td>颜色类型</td>
+</tr>
+<tr>
+<td>000000</td>
+<td>依次表示为压缩方法、滤波器方法、扫描方法</td>
+</tr>
+<tr>
+<td>436AB826</td>
+<td>CRC校验码</td>
+</tr>
+</tbody></table>
+<p> 一般情况下只需将高度的值修改的尽量大些就可以看到隐藏的信息了。 </p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-4.png" alt="image-4"></p>
+<p>有时需要恢复出原始宽高，这时就需要用 CRC 校验码， png 图片 IHDR 部分的 CRC 校验码，是由从 IDCH 到 IHDR 的十七位字节进行 CRC 计 算得到,图中即计算49484452000002CC000002860806000000 的 CRC 值为 529cc5e7。 如果修改了宽高而没有修改 CRC 的值，我们就可以通过枚举宽高的值进行 CRC 计算，若 和现在的 CRC 相同，则进行计算的宽高即为真实的宽高。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">m = <span class="built_in">open</span>(<span class="string">&quot;test.png&quot;</span>,<span class="string">&quot;rb&quot;</span>).read()</span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5000</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>((<span class="number">5000</span>):</span><br><span class="line">        c = m[<span class="number">12</span>:<span class="number">16</span>] + struct.pack(<span class="string">&#x27;&gt;i&#x27;</span>, i) + struct.pack(<span class="string">&#x27;&gt;i&#x27;</span>, j) + m[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        crc = binascii.crc32(c) &amp; <span class="number">0xffffffff</span></span><br><span class="line">        <span class="keyword">if</span> crc == <span class="number">0x529cc5e7</span>:	<span class="comment">#图片中的CRC值</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;宽：&quot;</span> + <span class="built_in">hex</span>(i) + <span class="string">&quot;\t高：&quot;</span> + <span class="built_in">hex</span>(j))	<span class="comment">#打印出真是的宽高</span></span><br><span class="line">            flag = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> flag == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>jpg图片宽高隐写：</p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-5.png" alt="image-5"></p>
+<p>bmp图片宽高隐写</p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-6.png" alt="image-6"></p>
+<h2 id="LSB隐写"><a href="#LSB隐写" class="headerlink" title="LSB隐写"></a>LSB隐写</h2><p>LSB 隐写就是修改 RGB 颜色分量的最低二进制位，颜色依旧看不出有什么变化，从而达到隐藏信息的目的。</p>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-7.png" alt="image-7"></p>
+<p>如果想要提取出隐藏信息的话，只需将每个 RGB 的最低位提取出来，重新组成新的文件 或者字符串即可。一般对于 LSB 隐写我们常用的有两个工具，一个是 stegsolve，多见于 Windows 系统， 另外一个是 zsteg，多见于 Linux 系统。</p>
+<h3 id="Stegsolve"><a href="#Stegsolve" class="headerlink" title="Stegsolve"></a>Stegsolve</h3><p>我们主要用它的 Data Extract（数据分离）功能，其包括 Extract by（提取 方式）、 Bit Order（位顺序）和 Bit Plane Order（位平面顺序）</p>
+<ul>
+<li>Extract by 分为 Row（行）和 Column（列），我们可以把图片看成一个矩阵，也就 是最低位提取时，是按行的方式进行提取还是按列的方式进行提取。  </li>
+<li>Bit Order 与字节读取顺序有关，如果设置了 MSBFirst，那么就是从高位开始读取， LSBFirst 是从低位开始读取 。</li>
+<li>Bit Plane Order 是设置提取出来的数据的排列顺序。大多数情况下我们提取的是 RGB 的最后一位。</li>
+</ul>
+<p><img src="/../image/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/image-8.png" alt="image-8"></p>
+<h3 id="加密LSB"><a href="#加密LSB" class="headerlink" title="加密LSB"></a>加密LSB</h3><p>cloacked-pixel</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/livz/cloacked-pixel">https://github.com/livz/cloacked-pixel</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ python lsb.py </span><br><span class="line">LSB steganogprahy. Hide files within least significant bits of images.</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  lsb.py hide &lt;img_file&gt; &lt;payload_file&gt; &lt;password&gt;</span><br><span class="line">  lsb.py extract &lt;stego_file&gt; &lt;out_file&gt; &lt;password&gt;</span><br><span class="line">  lsb.py analyse &lt;stego_file&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="盲水印"><a href="#盲水印" class="headerlink" title="盲水印"></a>盲水印</h2><p>盲水印就是把我们的水印隐藏在图片中，但是隐藏前后的图片在视觉上没有任何区别。 </p>
+<p>在 CTF 中比较常见的盲水印工具是 BlindWaterMark，这是一个 python编写的脚本。使 用该脚本加密的盲水印隐写有些比较明显的特征，在还原时需要提供两张看起来一样的图片， 不过通过比较图片的 md5 值或者图片大小都可以发现是两张不同的图片。</p>
+<h3 id="BindWateMark使用："><a href="#BindWateMark使用：" class="headerlink" title="BindWateMark使用："></a>BindWateMark使用：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合成盲水印</span></span><br><span class="line">python bwm.py encode hui.png wm.png hui_with_wm.png</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提取v盲水印</span></span><br><span class="line">python bwm.py decode hui.png hui_with_wm.png wm_from_hui.png</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hui.png</td>
+<td>无水印原图</td>
+<td>wm.png</td>
+<td>水印图</td>
+</tr>
+<tr>
+<td>hui_with_wm.png</td>
+<td>有盲水印的图</td>
+<td>wm_from_hui.png</td>
+<td>反解出来的水印图</td>
+</tr>
+</tbody></table>
+<p> 另外还有一种 java 盲水印工具，其项目地址：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/ww23/BlindWatermark/releases/">https://github.com/ww23/BlindWatermark/releases/</a>  </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加密文字水印</span></span><br><span class="line">java -jar BlindWatermark.jar encode -ct <span class="built_in">input</span>.png <span class="string">&quot;text watermark&quot;</span> output.png</span><br><span class="line"><span class="comment"># 解密文字水印</span></span><br><span class="line">java -jar BlidWatermark.jar decode -c <span class="built_in">input</span>.png output.png</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>该项目提取水印无需原图</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/guofei9987/blind_watermark">https://github.com/guofei9987/blind_watermark</a></p>
+</blockquote>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/MISC/">MISC</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Shigure</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lshigurel"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%9B%BE%E7%89%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">常见图片格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E5%BC%8F%E9%9A%90%E5%86%99-%E7%9B%B4%E6%8E%A5%E9%99%84%E5%8A%A0%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">2.</span> <span class="toc-text">附加式隐写 - 直接附加字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E5%BC%8F%E9%9A%90%E5%86%99-%E5%9B%BE%E7%A7%8D"><span class="toc-number">3.</span> <span class="toc-text">附加式隐写 - 图种</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E5%BC%8F%E9%9A%90%E5%86%99-EXIF%E9%9A%90%E5%86%99"><span class="toc-number">4.</span> <span class="toc-text">附加式隐写 - EXIF隐写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%AE%BD%E9%AB%98%E9%9A%90%E5%86%99"><span class="toc-number">5.</span> <span class="toc-text">图片宽高隐写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LSB%E9%9A%90%E5%86%99"><span class="toc-number">6.</span> <span class="toc-text">LSB隐写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stegsolve"><span class="toc-number">6.1.</span> <span class="toc-text">Stegsolve</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86LSB"><span class="toc-number">6.2.</span> <span class="toc-text">加密LSB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B2%E6%B0%B4%E5%8D%B0"><span class="toc-number">7.</span> <span class="toc-text">盲水印</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BindWateMark%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">7.1.</span> <span class="toc-text">BindWateMark使用：</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/29/%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%88%86%E6%9E%90/" title="压缩包分析">压缩包分析</a><time datetime="2024-10-28T16:01:31.000Z" title="发表于 2024-10-29 00:01:31">2024-10-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/28/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99/" title="图片隐写">图片隐写</a><time datetime="2024-10-28T15:33:23.000Z" title="发表于 2024-10-28 23:33:23">2024-10-28</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/background.png);"><div id="footer-wrap"><div class="copyright">&copy;2024 By Shigure</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><div class="js-pjax"></div></div></body></html>
